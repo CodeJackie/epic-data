@@ -1,7 +1,7 @@
 const Image = require('../models/Image')
 const Story = require('../models/Story')
 
-const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList } = require('graphql')
+const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList, GraphQLNonNull } = require('graphql')
 
 
 //Image Type
@@ -64,6 +64,31 @@ const RootQuery = new GraphQLObjectType({
     }
 })
 
+//Mutations
+
+const mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addImage: {
+            type: ImageType,
+            args: {
+                imgUrl: { type: GraphQLNonNull(GraphQLString) },
+                imgTitle: { type: GraphQLNonNull(GraphQLString) },
+                imgAlt: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve(parent, args) {
+                const image = new Image({
+                    imgUrl: args.imgUrl,
+                    imgTitle: args.imgTitle,
+                    imgAlt: args.imgAlt,
+                })
+            return image.save()
+            }
+        }
+    }
+})
+
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation
 })
