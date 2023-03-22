@@ -26,7 +26,7 @@ const StoryType = new GraphQLObjectType({
         image: {
             type: ImageType,
             resolve(parent, args) {
-                return Image.findById(parent, imgId)
+                return Image.findById(parent.imageId)
             }
         }
     })
@@ -83,6 +83,33 @@ const mutation = new GraphQLObjectType({
                     imgAlt: args.imgAlt,
                 })
             return image.save()
+            }
+        },
+        deleteImage: {
+            type: ImageType,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent, args) {
+                return Image.findByIdAndRemove(args.id)
+            }
+        },
+        addStory: {
+            type: StoryType,
+            args: {
+                title: { type: GraphQLNonNull(GraphQLString) },
+                date: { type: GraphQLNonNull(GraphQLString) },
+                content: { type: GraphQLNonNull(GraphQLString) },
+                imageId: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve(parent, args) {
+                const story = new Story({
+                    title: args.title,
+                    date: args.date,
+                    content: args.content,
+                    imageId: args.imageId
+                })
+                return story.save()
             }
         }
     }

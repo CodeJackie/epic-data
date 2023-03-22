@@ -1,16 +1,16 @@
 const mongoose = require('mongoose')
 
 const StorySchema = new mongoose.Schema({
-    Title: {
+    title: {
         type: String,
     },
-    Content: {
+    content: {
         type: String,
     },
-    Date: {
+    date: {
         type: String,
     },
-    ImgId: {
+    imageId: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Image'
     }
