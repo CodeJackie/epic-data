@@ -94,6 +94,28 @@ const mutation = new GraphQLObjectType({
                 return Image.findByIdAndRemove(args.id)
             }
         },
+        updateImage: {
+            type: ImageType,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID) },
+                imgUrl: { type: GraphQLString },
+                imgTitle: { type: GraphQLString },
+                imgAlt: { type: GraphQLString }
+            },
+            resolve(parent, args) {
+                return Image.findByIdAndUpdate(
+                    args.id,
+                    {
+                        $set: {
+                            imgUrl: args.imgUrl,
+                            imgTitle: args.imgTitle,
+                            imgAlt: args.imgAlt
+                        },
+                    },
+                 {new: true}
+                )
+            }
+        },
         addStory: {
             type: StoryType,
             args: {
@@ -110,6 +132,37 @@ const mutation = new GraphQLObjectType({
                     imageId: args.imageId
                 })
                 return story.save()
+            }
+        },
+        deleteStory: {
+            type: StoryType,
+            args: { 
+            id: { type: GraphQLNonNull(GraphQLID) },
+            },
+            resolve(parent, args) {
+                return Story.findByIdAndRemove(args.id)
+            }
+        },
+        updateStory: {
+            type: StoryType,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID) },
+                title: { type: GraphQLString },
+                date: { type: GraphQLString },
+                content: { type: GraphQLString }
+            },
+            resolve(parent, args) {
+                return Story.findByIdAndUpdate(
+                    args.id,
+                    {
+                        $set: {
+                            title: args.title,
+                            date: args.date,
+                            content: args.content
+                        },
+                    },
+                 {new: true}
+                )
             }
         }
     }
