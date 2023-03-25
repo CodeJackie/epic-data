@@ -1,4 +1,9 @@
 const express = require('express')
+const cors = require('cors')
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  optionsSuccessStatus: 200
+}
 require('dotenv').config()
 const { graphqlHTTP } = require('express-graphql')
 const schema = require('./schema/schema')
@@ -10,6 +15,10 @@ const app = express()
 //Connect Database
 connectDB()
 
+//CORS
+app.use(cors(corsOptions))
+
+//Use GraphQL & dotENV
 app.use('/graphql', graphqlHTTP({
   schema,
   graphiql: process.env.NODE_ENV === 'development'
