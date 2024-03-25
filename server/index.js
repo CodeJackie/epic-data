@@ -28,3 +28,4 @@ app.use('/graphql', graphqlHTTP({
 app.listen(port, () => {
   console.log(`Hello there from http://localhost:${port}`);
 });
+//access by going to localhost/port/graphql
